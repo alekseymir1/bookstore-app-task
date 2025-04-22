@@ -1,0 +1,369 @@
+openapi: 3.0.1
+info:
+  title: Bookstore API
+  description: API documentation for the Bookstore application
+  version: 1.0.0
+  contact:
+    name: Bookstore Support
+    email: support@bookstore.com
+    url: https://www.bookstore.com/support
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+servers:
+  - url: http://localhost:8080
+    description: Local Development Server
+tags:
+  - name: Book
+    description: Book management APIs
+  - name: Customer
+    description: Customer management APIs
+  - name: Purchase
+    description: Book purchase APIs
+  - name: Pricing
+    description: Book pricing APIs
+paths:
+  /api/books:
+    get:
+      tags:
+        - Book
+      summary: Get all books
+      description: Retrieves a list of all books in the inventory
+      responses:
+        '200':
+          description: Successfully retrieved the list of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+    post:
+      tags:
+        - Book
+      summary: Add a new book
+      description: Adds a new book to the inventory
+      requestBody:
+        description: Book object to be added to the inventory
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '201':
+          description: Book successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+  /api/books/{id}:
+    get:
+      tags:
+        - Book
+      summary: Get a book by ID
+      description: Retrieves a specific book by its ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the book to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved the book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+    put:
+      tags:
+        - Book
+      summary: Update a book
+      description: Updates an existing book in the inventory
+      parameters:
+        - name: id
+          in: path
+          description: ID of the book to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Updated book object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Book'
+      responses:
+        '200':
+          description: Book successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+    delete:
+      tags:
+        - Book
+      summary: Delete a book
+      description: Deletes a book from the inventory
+      parameters:
+        - name: id
+          in: path
+          description: ID of the book to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Book successfully deleted
+        '404':
+          description: Book not found
+  /api/customers:
+    get:
+      tags:
+        - Customer
+      summary: Get all customers
+      description: Retrieves a list of all customers
+      responses:
+        '200':
+          description: Successfully retrieved the list of customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    post:
+      tags:
+        - Customer
+      summary: Add a new customer
+      description: Creates a new customer record
+      requestBody:
+        description: Customer object to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: Customer successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+  /api/customers/{id}:
+    get:
+      tags:
+        - Customer
+      summary: Get a customer by ID
+      description: Retrieves a specific customer by their ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the customer to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved the customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+    put:
+      tags:
+        - Customer
+      summary: Update a customer
+      description: Updates an existing customer's information
+      parameters:
+        - name: id
+          in: path
+          description: ID of the customer to update
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Updated customer object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: Customer successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+  /api/customers/{id}/loyalty-points:
+    get:
+      tags:
+        - Customer
+      summary: Get customer loyalty points
+      description: Retrieves the loyalty points for a specific customer
+      parameters:
+        - name: id
+          in: path
+          description: ID of the customer whose loyalty points to retrieve
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved loyalty points
+          content:
+            application/json:
+              schema:
+                type: integer
+        '404':
+          description: Customer not found
+  /api/purchases:
+    post:
+      tags:
+        - Purchase
+      summary: Purchase books
+      description: Process a book purchase for a customer
+      requestBody:
+        description: Purchase request with customer ID and book IDs
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseRequest'
+      responses:
+        '200':
+          description: Purchase successfully processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseResponse'
+        '400':
+          description: Invalid request - customer or book not found
+  /api/pricing/calculate:
+    post:
+      tags:
+        - Pricing
+      summary: Calculate price for books
+      description: Calculate the price for a list of books for a customer
+      requestBody:
+        description: Pricing request with customer ID and book IDs
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PricingRequest'
+      responses:
+        '200':
+          description: Price successfully calculated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingResponse'
+        '400':
+          description: Invalid request - customer or book not found
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          readOnly: true
+          type: integer
+          format: int64
+        title:
+          type: string
+        basePrice:
+          type: number
+          format: double
+        type:
+          $ref: '#/components/schemas/BookType'
+    BookType:
+      type: string
+      enum:
+        - NEW_RELEASE
+        - REGULAR
+        - OLD_EDITION
+    Customer:
+      type: object
+      properties:
+        id:
+          readOnly: true
+          type: integer
+          format: int64
+        name:
+          type: string
+        loyaltyPoints:
+          type: integer
+          format: int32
+    PurchaseRequest:
+      type: object
+      properties:
+        customerId:
+          type: integer
+          format: int64
+        bookIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+    PurchaseResponse:
+      type: object
+      properties:
+        totalPrice:
+          type: number
+          format: double
+        loyaltyPointsEarned:
+          type: integer
+          format: int32
+        books:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+        freeBooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+    PricingRequest:
+      type: object
+      properties:
+        customerId:
+          type: integer
+          format: int64
+        bookIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+    PricingResponse:
+      type: object
+      properties:
+        totalPrice:
+          type: number
+          format: double
+        books:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+        freeBooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
