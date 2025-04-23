@@ -6,16 +6,14 @@ This Spring Boot-based REST API provides a system for managing an online booksto
 
 ## Project Focus
 
-This project focuses on:
-- Pricing logic for different book types
-- Loyalty point system for customer rewards
+The project includes endpoint and service and dto layer.
 
 The project does not include:
 - UI implementation
 - Authentication and authorization
 - Extensive error handling
 
-Unit tests are included for the service layer.
+Basic unit tests are included for the service layer.
 
 ## Features
 
@@ -66,99 +64,7 @@ The application follows a layered architecture with:
    - `PurchaseRequest`: Contains customer ID and book IDs for a purchase
    - `PurchaseResponse`: Contains total price, loyalty points earned, and free books
 
-
-## API Endpoints
-
-### Book Endpoints
-
-#### Get all books
-```
-GET /api/books
-```
-
-#### Get a book by ID
-```
-GET /api/books/{id}
-```
-
-#### Add a new book
-```
-POST /api/books
-```
-Request body:
-```json
-{
-  "title": "Book Title",
-  "basePrice": 29.99,
-  "type": "REGULAR"
-}
-```
-
-#### Update a book
-```
-PUT /api/books/{id}
-```
-Request body: Same as for adding a book
-
-#### Delete a book
-```
-DELETE /api/books/{id}
-```
-
-#### Purchase books
-```
-POST /api/books/purchase
-```
-Request body:
-```json
-{
-  "customerId": 1,
-  "bookIds": [1, 2, 3]
-}
-```
-Response:
-```json
-{
-  "totalPrice": 59.98,
-  "loyaltyPointsEarned": 3,
-  "freeBooks": ["Free Book Title"]
-}
-```
-
-### Customer Endpoints
-
-#### Get all customers
-```
-GET /api/customers
-```
-
-#### Get a customer by ID
-```
-GET /api/customers/{id}
-```
-
-#### Add a new customer
-```
-POST /api/customers
-```
-Request body:
-```json
-{
-  "name": "John Doe",
-  "loyaltyPoints": 0
-}
-```
-
-#### Update a customer
-```
-PUT /api/customers/{id}
-```
-Request body: Same as for adding a customer
-
-#### Get a customer's loyalty points
-```
-GET /api/customers/{id}/loyalty-points
-```
+   
 
 ## How to Run
 
