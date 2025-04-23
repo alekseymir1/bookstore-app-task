@@ -35,8 +35,8 @@ The price of books is calculated based on:
 
 ### 3. Loyalty Points System
 - 1 loyalty point is awarded for each purchased book
-- When 10 loyalty points are accumulated, the customer can get one Regular or Old Edition book for free
-- After redeeming a free book, loyalty points reset to 0
+- When 10 or more loyalty points are accumulated, the customer can get one Regular or Old Edition book for free
+- After redeeming a free book, loyalty points reset to 0 even you have more than 10
 
 ## Architecture
 
@@ -64,6 +64,13 @@ The application follows a layered architecture with:
    - `PurchaseRequest`: Contains customer ID and book IDs for a purchase
    - `PurchaseResponse`: Contains total price, loyalty points earned, and free books
 
+## Explanation of the decisions made along the way
+- This is a "standard" CRUD Restful application
+- As the purchase process doesn't include stock change (how many books are left), the purchase process is basic and involves 
+only the calculation of that price and loyalty points. Loyalty points are not added for a free book
+- If a customer has enough loyalty points and there is more than one book eligible for free, the least expensive one will be free.
+- No login/auth process so a customer is passed in the explicit way. There is no protection for concurrent requests with 
+the same customer that potentially can lead to a situation that customer will get more free books than expected
    
 
 ## How to Run
